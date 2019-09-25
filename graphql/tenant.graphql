@@ -1,0 +1,14 @@
+
+type Tenant {
+    id: ID!
+    first_name: String!
+    last_name: String!
+    created_at: DateTime!
+    updated_at: DateTime!
+    locator: User! @belongsTo(relation: "user")
+}
+
+extend type Query {
+    tenants: [Tenant!]! @paginate(type: "paginator" model: "App\\Tenant")
+    tenant(id: ID @eq): Tenant @find(model: "App\\Tenant")
+}
