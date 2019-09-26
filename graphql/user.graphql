@@ -10,18 +10,31 @@ type User {
 }
 
 input TypeSearchString {
-    equal: String @eq
+    eq: String
+    contains: String
+    notContains: String
 }
+
+input TypeSearchInt {
+    contains: Int
+    equal: Int
+    notIn: [Int]
+    in: [Int]
+    gt: Int
+    eq: Int
+}
+
 input UserSearch {
-    name: String @eq
-    # email: TypeSearchString
+    id: TypeSearchInt
+    name: TypeSearchString
+    email: TypeSearchString
 }
 
 extend type Query @middleware(checks: ["auth:api"]) {
     me: User! @auth(guard: "api")
     users(
         orderBy: [OrderByClause!] @orderBy
-        search: UserSearch @spread
+        search: UserSearch @builder(method: "App\\GraphQL\\Builder\\Search")
     ): [User!]! @paginate(type: "paginator" model: "App\\User")
     user(id: ID @eq): User @find(model: "App\\User")
 }
