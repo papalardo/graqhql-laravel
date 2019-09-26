@@ -68,6 +68,16 @@ class Search {
         $this->builder = $builder->where($field, 'like', "%$value%");
     }
 
+    public function beginsWith(Builder $builder, string $field, ?string $value)
+    {
+        $this->builder = $builder->where($field, 'like', "$value%");
+    }
+
+    public function endsWith(Builder $builder, string $field, ?string $value)
+    {
+        $this->builder = $builder->where($field, 'like', "%$value");
+    }
+
     public function equal(Builder $builder, string $field, $value)
     {
         $this->builder = $builder->where($field, $value);

@@ -13,6 +13,8 @@ input TypeSearchString {
     eq: String
     contains: String
     notContains: String
+    beginsWith: String
+    endsWith: String
 }
 
 input TypeSearchInt {
