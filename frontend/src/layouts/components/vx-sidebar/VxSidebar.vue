@@ -35,12 +35,12 @@
                     <template v-for="(sidebarItem, index) in sidebarItems">
 
                         <!-- GROUP ITEM HEADER -->
-                        <span :key="`header-${index}`" v-if="sidebarItem.header && !sidebarItemsMin" class="navigation-header truncate">{{ sidebarItem.header }}</span>
+                        <span :key="`header-${index}`" v-if="sidebarItem.header && !sidebarItemsMin" class="navigation-header truncate">{{ $t(sidebarItem.i18n) || sidebarItem.header }}</span>
                         <template v-else-if="!sidebarItem.header">
 
                             <!-- IF IT'S SINGLE ITEM -->
                             <vx-sidebar-item ref="sidebarLink" :key="`sidebarItem-${index}`" v-if="!sidebarItem.submenu" :index="index" :to="sidebarItem.slug != 'external' ? sidebarItem.url : ''" :href="sidebarItem.slug == 'external' ? sidebarItem.url : ''" :icon="sidebarItem.icon" :target="sidebarItem.target" :isDisabled="sidebarItem.isDisabled">
-                                <span v-show="!sidebarItemsMin" class="truncate">{{ sidebarItem.name }}</span>
+                                <span v-show="!sidebarItemsMin" class="truncate">{{ $t(sidebarItem.i18n) || sidebarItem.name }}</span>
                                 <vs-chip class="ml-auto" :color="sidebarItem.tagColor" v-if="sidebarItem.tag && (isMouseEnter || !reduce)">{{ sidebarItem.tag }}</vs-chip>
                             </vx-sidebar-item>
 

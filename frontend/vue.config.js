@@ -9,5 +9,12 @@
 
 
 module.exports = {
-  publicPath: '/'
+  publicPath: '/',
+
+  pluginOptions: {
+    apollo: {
+      enableMocks: false,
+      enableEngine: true
+    }
+  }
 }

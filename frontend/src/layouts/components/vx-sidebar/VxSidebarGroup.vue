@@ -18,17 +18,17 @@
 	<div @click="clickGroup" class="group-header w-full">
 		<span class="flex items-center w-full">
 			<feather-icon :icon="group.icon || 'CircleIcon'" :svgClasses="{ 'w-3 h-3' : this.groupIndex % 1 != 0 }" v-if="group.icon || (this.groupIndex > Math.floor(this.groupIndex))" />
-			<span v-show="!sidebarItemsMin" class="truncate mr-3 select-none">{{ group.name }}</span>
+			<span v-show="!sidebarItemsMin" class="truncate mr-3 select-none">{{ $t(group.i18n) || group.name }}</span>
 			<vs-chip class="ml-auto mr-4" :color="group.tagColor" v-if="group.tag && !sidebarItemsMin">{{ group.tag }}</vs-chip>
 		</span>
 		<feather-icon icon="ChevronRightIcon" svg-classes="w-4 h-4" :class="[{'rotate90' : openItems}, 'feather-grp-header-arrow']" v-show="!sidebarItemsMin" />
-		<span class="vs-sidebar--tooltip">{{ group.name }}</span>
+		<span class="vs-sidebar--tooltip">{{ $t(group.i18n) || group.name }}</span>
     </div>
     <ul ref="items" :style="styleItems" class="vs-sidebar-group-items">
       <li v-for="(groupItem, index) in group.submenu" :key="index">
 		<vx-sidebar-group :group="groupItem" :groupIndex="Number(`${groupIndex}.${index}`)" :open="isGroupActive(groupItem)" :openHover="openHover" v-if="groupItem.submenu" />
 		<vx-sidebar-item :index="groupIndex + '.' + index" :to="groupItem.url" :icon="itemIcon(groupIndex + '.' + index)" icon-small :target="groupItem.target" v-else>
-			<span class="truncate">{{ groupItem.name }}</span>
+			<span class="truncate">{{ $t(groupItem.i18n) || groupItem.name }}</span>
 			<vs-chip class="ml-auto" :color="groupItem.tagColor" v-if="groupItem.tag">{{ groupItem.tag }}</vs-chip>
 		</vx-sidebar-item>
       </li>
@@ -165,8 +165,6 @@ export default {
                         }
                     }
                 })
-
-
             }
         },
         mouseover() {

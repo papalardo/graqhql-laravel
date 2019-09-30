@@ -10,7 +10,21 @@
 
 <template>
     <div class="layout--main" :class="[navbarClasses, footerClasses, {'app-page': isAppPage}]">
+        <vx-tour :steps="steps" v-if="!disableThemeTour" />
 
+        <the-customizer
+            @updateNavbar="updateNavbar"
+            @updateNavbarColor="updateNavbarColor"
+            :navbarType="navbarType"
+            :navbarColor="navbarColor"
+            :footerType="footerType"
+            @updateFooter="updateFooter"
+            :routerTransition="routerTransition"
+            @updateRouterTransition="updateRouterTransition"
+            v-if="!disableCustomizer"
+            :hideScrollToTop="hideScrollToTop"
+            @toggleHideScrollToTop="toggleHideScrollToTop"
+            />
         <vx-sidebar :sidebarItems="sidebarItems" :logo="require('@/assets/images/logo/logo.png')" title="Vuesax" parent=".layout--main" />
 
         <div id="content-area" :class="[contentAreaClass, {'show-overlay': bodyOverlay}]">
@@ -82,11 +96,13 @@
 
 <script>
 import VxSidebar from '@/layouts/components/vx-sidebar/VxSidebar.vue';
+import TheCustomizer from "../components/customizer/TheCustomizer.vue";
 import TheNavbar from '../components/TheNavbar.vue';
 import TheFooter from '../components/TheFooter.vue';
 import themeConfig from '@/../themeConfig.js';
 import sidebarItems from "@/layouts/components/vx-sidebar/sidebarItems.js";
 import BackToTop from 'vue-backtotop'
+const VxTour = () => import('@/components/VxTour.vue')
 
 export default {
     data() {
@@ -101,7 +117,39 @@ export default {
             disableCustomizer: themeConfig.disableCustomizer,
             windowWidth: window.innerWidth, //width of windows
             hideScrollToTop: themeConfig.hideScrollToTop,
-            disableThemeTour: themeConfig.disableThemeTour
+            disableThemeTour: themeConfig.disableThemeTour,
+            steps: [
+                {
+                    target: '#btnSidebarToggler',
+                    content: 'Toggle Collapse Sidebar.'
+                },
+                {
+                    target: '.vx-navbar__starred-pages',
+                    content: 'Create your own bookmarks. You can also re-arrange them using drag & drop.'
+                },
+                {
+                    target: '.i18n-locale',
+                    content: 'You can change language from here.'
+                },
+                {
+                    target: '.navbar-fuzzy-search',
+                    content: 'Try fuzzy search to visit pages in flash.'
+                },
+                {
+                    target: '.customizer-btn',
+                    content: 'Customize template based your preference',
+                    params: {
+                        placement: 'left'
+                    }
+                },
+                {
+                    target: '.vs-button.buy-now',
+                    content: 'Buy this awesomeness at affordable price!',
+                    params: {
+                        placement: 'top'
+                    }
+                },
+            ]
         }
     },
     watch: {
@@ -153,10 +201,20 @@ export default {
         changeRouteTitle(title) {
             this.routeTitle = title;
         },
+        updateNavbar(val) {
+            if(val == 'static') this.updateNavbarColor("#fff")
+            this.navbarType = val;
+        },
         updateNavbarColor(val) {
             this.navbarColor = val;
             if(val == "#fff") this.isNavbarDark = false
             else this.isNavbarDark = true
+        },
+        updateFooter(val) {
+            this.footerType = val;
+        },
+        updateRouterTransition(val) {
+            this.routerTransition = val;
         },
         handleWindowResize(event) {
             this.windowWidth = event.currentTarget.innerWidth;
@@ -183,7 +241,9 @@ export default {
         VxSidebar,
         TheNavbar,
         TheFooter,
-        BackToTop
+        TheCustomizer,
+        BackToTop,
+        VxTour
     },
     created() {
         this.setSidebarWidth();

@@ -239,6 +239,7 @@ export default{
             }
             this.isContentCollapsed = !this.isContentCollapsed;
             this.$emit("toggleCollapse", this.isContentCollapsed);
+
         },
         refreshcard() {
             this.$vs.loading({

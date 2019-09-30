@@ -1,95 +1,169 @@
 <!-- =========================================================================================
-  File Name: TheNavbar.vue
-  Description: Navbar component
-  Component Name: TheNavbar
-  ----------------------------------------------------------------------------------------
-  Item Name: Vuesax Admin - VueJS Dashboard Admin Template
-  Author: Pixinvent
-  Author URL: http://www.themeforest.net/user/pixinvent
+	File Name: TheNavbar.vue
+	Description: Navbar component
+	Component Name: TheNavbar
+	----------------------------------------------------------------------------------------
+	Item Name: Vuesax Admin - VueJS Dashboard Admin Template
+	Author: Pixinvent
+	Author URL: http://www.themeforest.net/user/pixinvent
 ========================================================================================== -->
 
 
 <template>
 <div class="relative">
-  <div class="vx-navbar-wrapper">
-    <vs-navbar class="vx-navbar navbar-custom" :color="navbarColor" :class="classObj">
+	<div class="vx-navbar-wrapper">
+		<vs-navbar class="vx-navbar navbar-custom" :color="navbarColor" :class="classObj">
 
-      <!-- SM - OPEN SIDEBAR BUTTON -->
-      <feather-icon class="sm:inline-flex xl:hidden cursor-pointer mr-1" icon="MenuIcon" @click.stop="showSidebar"></feather-icon>
+			<!-- SM - OPEN SIDEBAR BUTTON -->
+			<feather-icon class="sm:inline-flex xl:hidden cursor-pointer mr-1" icon="MenuIcon" @click.stop="showSidebar"></feather-icon>
 
-      <template v-if="breakpoint != 'md'">
-        <!-- STARRED PAGES - FIRST 10 -->
-        <ul class="vx-navbar__starred-pages">
-          <draggable v-model="starredPagesLimited" :group="{name: 'pinList'}" class="flex cursor-move">
-            <li class="starred-page" v-for="page in starredPagesLimited" :key="page.url">
-              <vx-tooltip :text="page.label" position="bottom" delay=".3s">
-                <feather-icon svgClasses="h-6 w-6" class="p-2 cursor-pointer" :icon="page.labelIcon" @click="$router.push(page.url)"></feather-icon>
-              </vx-tooltip>
-            </li>
-          </draggable>
-        </ul>
+			<template v-if="breakpoint != 'md'">
+				<!-- STARRED PAGES - FIRST 10 -->
+				<ul class="vx-navbar__starred-pages">
+					<draggable v-model="starredPagesLimited" :group="{name: 'pinList'}" class="flex cursor-move">
+						<li class="starred-page" v-for="page in starredPagesLimited" :key="page.url">
+							<vx-tooltip :text="page.label" position="bottom" delay=".3s">
+								<feather-icon svgClasses="h-6 w-6" class="p-2 cursor-pointer" :icon="page.labelIcon" @click="$router.push(page.url)"></feather-icon>
+							</vx-tooltip>
+						</li>
+					</draggable>
+				</ul>
 
-        <!-- STARRED PAGES MORE -->
-        <div class="vx-navbar__starred-pages--more-dropdown" v-if="starredPagesMore.length">
-          <vs-dropdown vs-custom-content vs-trigger-click>
-            <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" class="cursor-pointer p-2"></feather-icon>
-            <vs-dropdown-menu>
-              <ul class="vx-navbar__starred-pages-more--list">
-                <draggable v-model="starredPagesMore" :group="{name: 'pinList'}" class="cursor-move">
-                  <li class="starred-page--more flex items-center cursor-pointer" v-for="page in starredPagesMore" :key="page.url" @click="$router.push(page.url)">
-                    <feather-icon svgClasses="h-5 w-5" class="ml-2 mr-1" :icon="page.labelIcon"></feather-icon>
-                    <span class="px-2 pt-2 pb-1">{{ page.label }}</span>
-                  </li>
-                </draggable>
-              </ul>
-            </vs-dropdown-menu>
-          </vs-dropdown>
-        </div>
+				<!-- STARRED PAGES MORE -->
+				<div class="vx-navbar__starred-pages--more-dropdown" v-if="starredPagesMore.length">
+					<vs-dropdown vs-custom-content vs-trigger-click>
+						<feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" class="cursor-pointer p-2"></feather-icon>
+						<vs-dropdown-menu>
+							<ul class="vx-navbar__starred-pages-more--list">
+								<draggable v-model="starredPagesMore" :group="{name: 'pinList'}" class="cursor-move">
+									<li class="starred-page--more flex items-center cursor-pointer" v-for="page in starredPagesMore" :key="page.url" @click="$router.push(page.url)">
+										<feather-icon svgClasses="h-5 w-5" class="ml-2 mr-1" :icon="page.labelIcon"></feather-icon>
+										<span class="px-2 pt-2 pb-1">{{ page.label }}</span>
+									</li>
+								</draggable>
+							</ul>
+						</vs-dropdown-menu>
+					</vs-dropdown>
+				</div>
 
-        <div class="bookmark-container">
-          <feather-icon icon="StarIcon" :svgClasses="['stoke-current text-warning', {'text-white': navbarColor != '#fff'}]" class="cursor-pointer p-2" @click.stop="showBookmarkPagesDropdown = !showBookmarkPagesDropdown" />
+				<div class="bookmark-container">
+					<feather-icon icon="StarIcon" :svgClasses="['stoke-current text-warning', {'text-white': navbarColor != '#fff'}]" class="cursor-pointer p-2" @click.stop="showBookmarkPagesDropdown = !showBookmarkPagesDropdown" />
                     <div v-click-outside="outside" class="absolute bookmark-list w-1/3 xl:w-1/4 mt-4" v-if="showBookmarkPagesDropdown">
-          <vx-auto-suggest :autoFocus="true" :data="navbarSearchAndPinList" @selected="selected" @actionClicked="actionClicked" inputClassses="w-full" show-action show-pinned background-overlay></vx-auto-suggest>
-          </div>
-        </div>
-      </template>
+					<vx-auto-suggest :autoFocus="true" :data="navbarSearchAndPinList" @selected="selected" @actionClicked="actionClicked" inputClassses="w-full" show-action show-pinned background-overlay></vx-auto-suggest>
+					</div>
+				</div>
+			</template>
 
 
-      <vs-spacer></vs-spacer>
+			<vs-spacer></vs-spacer>
+
+			<!-- I18N -->
+			<vs-dropdown vs-custom-content vs-trigger-click class="cursor-pointer">
+				<span class="cursor-pointer flex i18n-locale"><img class="h-4 w-5" :src="require(`@/assets/images/flags/${$i18n.locale}.png`)" :alt="$i18n.locale" /><span class="hidden sm:block ml-2">{{ getCurrentLocaleData.lang }}</span></span>
+				<vs-dropdown-menu class="w-48 i18n-dropdown vx-navbar-dropdown">
+					<vs-dropdown-item @click="updateLocale('en')"><img class="h-4 w-5 mr-1" src="@/assets/images/flags/en.png" alt="en" /> &nbsp;English</vs-dropdown-item>
+					<vs-dropdown-item @click="updateLocale('fr')"><img class="h-4 w-5 mr-1" src="@/assets/images/flags/fr.png" alt="fr" /> &nbsp;French</vs-dropdown-item>
+					<vs-dropdown-item @click="updateLocale('de')"><img class="h-4 w-5 mr-1" src="@/assets/images/flags/de.png" alt="de" /> &nbsp;German</vs-dropdown-item>
+					<vs-dropdown-item @click="updateLocale('pt')"><img class="h-4 w-5 mr-1" src="@/assets/images/flags/pt.png" alt="pt" /> &nbsp;Portuguese</vs-dropdown-item>
+				</vs-dropdown-menu>
+			</vs-dropdown>
 
             <!-- SEARCHBAR -->
             <div class="search-full-container w-full h-full absolute left-0 rounded-lg" :class="{'flex': showFullSearch}" v-show="showFullSearch">
-                <vx-auto-suggest :autoFocus="showFullSearch" :data="navbarSearchAndPinList" @selected="selected" ref="navbarSearch" @closeSearchbar="showFullSearch = false" placeholder="Search..." class="w-full" inputClassses="w-full vs-input-no-border vs-input-no-shdow-focus no-icon-border" icon="SearchIcon" background-overlay></vx-auto-suggest>
+                <vx-auto-suggest
+                  class="w-full"
+                  inputClassses="w-full vs-input-no-border vs-input-no-shdow-focus no-icon-border"
+                  :autoFocus="showFullSearch"
+                  :data="navbarSearchAndPinList"
+                  icon="SearchIcon"
+                  placeholder="Search..."
+                  ref="navbarSearch"
+                  @closeSearchbar="showFullSearch = false"
+                  @selected="selected"
+                  background-overlay />
                 <div class="absolute right-0 h-full z-50">
                     <feather-icon icon="XIcon" class="px-4 cursor-pointer h-full close-search-icon" @click="showFullSearch = false"></feather-icon>
                 </div>
             </div>
             <feather-icon icon="SearchIcon" @click="showFullSearch = true" class="cursor-pointer navbar-fuzzy-search ml-4"></feather-icon>
 
-      <!-- NOTIFICATIONS -->
-      <vs-dropdown vs-custom-content vs-trigger-click class="cursor-pointer ml-4">
-        <feather-icon icon="BellIcon" class="cursor-pointer mt-1 sm:mr-6 mr-2" :badge="unreadNotifications.length"></feather-icon>
-        <vs-dropdown-menu class="notification-dropdown dropdown-custom vx-navbar-dropdown">
+            <!-- CART DROPDOWN -->
+            <vs-dropdown vs-custom-content vs-trigger-click class="cursor-pointer">
+                <feather-icon icon="ShoppingCartIcon" class="cursor-pointer ml-4 mr-6 mt-1" :badge="cartItems.length"></feather-icon>
+                <vs-dropdown-menu class="cart-dropdown vx-navbar-dropdown" :class="{'dropdown-custom': cartItems.length}">
 
-          <div class="notification-top text-center p-5 bg-primary text-white">
-            <h3 class="text-white">{{ unreadNotifications.length }} New</h3>
-            <p class="opacity-75">App Notifications</p>
-          </div>
+                    <!-- IF CART HAVE ITEMS: HEADER -->
+                    <template v-if="cartItems.length">
+                        <div class="notification-header text-center p-5 bg-primary text-white">
+                            <h3 class="text-white">{{ cartItems.length }} Item<span v-show="cartItems.length > 1">s</span></h3>
+                            <p class="opacity-75">In Your Cart</p>
+                        </div>
 
-          <VuePerfectScrollbar ref="mainSidebarPs" class="scroll-area--nofications-dropdown p-0 mb-10" :settings="settings">
-          <ul class="bordered-items">
-            <li v-for="ntf in unreadNotifications" :key="ntf.index" class="flex justify-between px-4 py-4 notification cursor-pointer">
-              <div class="flex items-start">
-                <feather-icon :icon="ntf.icon" :svgClasses="[`text-${ntf.category}`, 'stroke-current mr-1 h-6 w-6']"></feather-icon>
-                <div class="mx-2">
-                  <span class="font-medium block notification-title" :class="[`text-${ntf.category}`]">{{ ntf.title }}</span>
-                  <small>{{ ntf.msg }}</small>
-                </div>
-              </div>
-              <small class="mt-1 whitespace-no-wrap">{{ elapsedTime(ntf.time) }}</small>
-            </li>
-          </ul>
-          </VuePerfectScrollbar>
+                        <!-- CART ITEMS -->
+                        <VuePerfectScrollbar ref="mainSidebarPs" class="scroll-area--cart-items-dropdowm p-0 mb-10" :settings="settings">
+                        <ul class="bordered-items">
+                            <li v-for="item in cartItems" :key="item.objectID" class="vx-row no-gutter cart-item cursor-pointer">
+
+                                <!-- IMG COL -->
+                                <div class="vx-col w-1/5 item-img-container bg-white flex items-center justify-center">
+                                    <img :src="item.image" alt="item" class="cart-dropdown-item-img p-4">
+                                </div>
+
+                                <!-- INFO COL -->
+                                <div class="vx-col w-4/5 pr-4 pl-2 py-4 flex flex-col justify-center">
+                                    <span class="font-medium block cart-item-title truncate">{{ item.name }}</span>
+                                    <small class="truncate mb-2">{{ item.description }}</small>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm font-medium">{{ item.quantity }} <small>x</small> ${{ item.price }}</span>
+                                        <feather-icon icon="XIcon" svgClasses="h-4 w-4 cursor-pointer text-danger" class="hover:text-danger" @click.stop="removeItemFromCart(item)" />
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        </VuePerfectScrollbar>
+                        <div
+                            class=" checkout-footer fixed bottom-0 rounded-b-lg text-primary font-semibold w-full p-2 text-center border border-b-0 border-l-0 border-r-0 border-solid d-theme-border-grey-light cursor-pointer"
+                            @click="$router.push('/apps/eCommerce/checkout')">
+
+                            <span class="flex items-center justify-center">
+                              <feather-icon icon="ShoppingCartIcon" svgClasses="h-4 w-4"></feather-icon>
+                              <span class="ml-2">Checkout</span>
+                            </span>
+
+                        </div>
+                    </template>
+
+                    <!-- IF CART IS EMPTY -->
+                    <template v-else>
+                        <p class="p-4">Your Cart Is Empty.</p>
+                    </template>
+                </vs-dropdown-menu>
+            </vs-dropdown>
+
+			<!-- NOTIFICATIONS -->
+			<vs-dropdown vs-custom-content vs-trigger-click class="cursor-pointer">
+				<feather-icon icon="BellIcon" class="cursor-pointer mt-1 sm:mr-6 mr-2" :badge="unreadNotifications.length"></feather-icon>
+				<vs-dropdown-menu class="notification-dropdown dropdown-custom vx-navbar-dropdown">
+
+					<div class="notification-top text-center p-5 bg-primary text-white">
+						<h3 class="text-white">{{ unreadNotifications.length }} New</h3>
+						<p class="opacity-75">App Notifications</p>
+					</div>
+
+					<VuePerfectScrollbar ref="mainSidebarPs" class="scroll-area--nofications-dropdown p-0 mb-10" :settings="settings">
+					<ul class="bordered-items">
+						<li v-for="ntf in unreadNotifications" :key="ntf.index" class="flex justify-between px-4 py-4 notification cursor-pointer">
+							<div class="flex items-start">
+								<feather-icon :icon="ntf.icon" :svgClasses="[`text-${ntf.category}`, 'stroke-current mr-1 h-6 w-6']"></feather-icon>
+								<div class="mx-2">
+									<span class="font-medium block notification-title" :class="[`text-${ntf.category}`]">{{ ntf.title }}</span>
+									<small>{{ ntf.msg }}</small>
+								</div>
+							</div>
+							<small class="mt-1 whitespace-no-wrap">{{ elapsedTime(ntf.time) }}</small>
+						</li>
+					</ul>
+					</VuePerfectScrollbar>
                     <div class="
                         checkout-footer
                         fixed
@@ -109,53 +183,93 @@
                         cursor-pointer">
                         <span>View All Notifications</span>
                     </div>
-        </vs-dropdown-menu>
-      </vs-dropdown>
+				</vs-dropdown-menu>
+			</vs-dropdown>
 
-      <!-- USER META -->
-      <div class="the-navbar__user-meta flex items-center">
-        <div class="text-right leading-tight hidden sm:block">
-          <p class="font-semibold">{{ user_displayName }}</p>
-          <small>Available</small>
-        </div>
-        <vs-dropdown vs-custom-content vs-trigger-click class="cursor-pointer">
-          <div class="con-img ml-3">
-            <img
-              v-if="activeUserImg.startsWith('http')"
-              key="onlineImg"
-              :src="activeUserImg"
-              alt="user-img"
-              width="40"
-              height="40"
-              class="rounded-full shadow-md cursor-pointer block" />
-            <img
-              v-else
-              key="localImg"
-              :src="require(`@/assets/images/portrait/small/${activeUserImg}`)"
-              alt="user-img"
-              width="40"
-              height="40"
-              class="rounded-full shadow-md cursor-pointer block" />
-          </div>
-          <vs-dropdown-menu class="vx-navbar-dropdown">
-            <ul style="min-width: 9rem">
-              <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white" @click="$router.push('/pages/profile')"><feather-icon icon="UserIcon" svgClasses="w-4 h-4"></feather-icon> <span class="ml-2">Profile</span></li>
-              <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white" @click="$router.push('/apps/email')"><feather-icon icon="MailIcon" svgClasses="w-4 h-4"></feather-icon> <span class="ml-2">Inbox</span></li>
-              <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white" @click="$router.push('/apps/todo')"><feather-icon icon="CheckSquareIcon" svgClasses="w-4 h-4"></feather-icon> <span class="ml-2">Tasks</span></li>
-              <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white" @click="$router.push('/apps/chat')"><feather-icon icon="MessageSquareIcon" svgClasses="w-4 h-4"></feather-icon> <span class="ml-2">Chat</span></li>
-              <vs-divider class="m-1"></vs-divider>
-              <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white" @click="$router.push('/pages/login')"><feather-icon icon="LogOutIcon" svgClasses="w-4 h-4"></feather-icon> <span class="ml-2">Logout</span></li>
-            </ul>
-          </vs-dropdown-menu>
-        </vs-dropdown>
-      </div>
+			<!-- USER META -->
+			<div class="the-navbar__user-meta flex items-center">
+				<div class="text-right leading-tight hidden sm:block">
+					<p class="font-semibold">{{ user_displayName }}</p>
+					<small>Available</small>
+				</div>
+				<vs-dropdown vs-custom-content vs-trigger-click class="cursor-pointer">
+					<div class="con-img ml-3">
+						<img
+							v-if="activeUserImg.startsWith('http')"
+							key="onlineImg"
+							:src="activeUserImg"
+							alt="user-img"
+							width="40"
+							height="40"
+							class="rounded-full shadow-md cursor-pointer block" />
+						<img
+							v-else
+							key="localImg"
+							:src="require(`@/assets/images/portrait/small/${activeUserImg}`)"
+							alt="user-img"
+							width="40"
+							height="40"
+							class="rounded-full shadow-md cursor-pointer block" />
+					</div>
+					<vs-dropdown-menu class="vx-navbar-dropdown">
+						<ul style="min-width: 9rem">
+							<li
+                class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white"
+                @click="$router.push('/pages/profile')">
 
-    </vs-navbar>
-  </div>
+                <feather-icon icon="UserIcon" svgClasses="w-4 h-4" />
+                <span class="ml-2">Profile</span>
+              </li>
+							<li
+                class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white"
+                @click="$router.push('/apps/email')">
+
+                <feather-icon icon="MailIcon" svgClasses="w-4 h-4" />
+                <span class="ml-2">Inbox</span>
+              </li>
+							<li
+                class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white"
+                @click="$router.push('/apps/todo')">
+
+                <feather-icon icon="CheckSquareIcon" svgClasses="w-4 h-4" />
+                <span class="ml-2">Tasks</span>
+              </li>
+							<li
+                class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white"
+                @click="$router.push('/apps/chat')">
+
+                <feather-icon icon="MessageSquareIcon" svgClasses="w-4 h-4" />
+                <span class="ml-2">Chat</span>
+              </li>
+              <li
+                class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white"
+                @click="$router.push('/apps/eCommerce/wish-list')">
+
+                <feather-icon icon="HeartIcon" svgClasses="w-4 h-4" />
+                <span class="ml-2">Wish List</span>
+              </li>
+
+							<vs-divider class="m-1"></vs-divider>
+
+							<li
+                class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white"
+                @click="logout">
+                <feather-icon icon="LogOutIcon" svgClasses="w-4 h-4"/>
+                <span class="ml-2">Logout</span>
+              </li>
+						</ul>
+					</vs-dropdown-menu>
+				</vs-dropdown>
+			</div>
+
+		</vs-navbar>
+	</div>
 </div>
 </template>
 
 <script>
+import firebase from 'firebase/app'
+import 'firebase/auth'
 import VxAutoSuggest from '@/components/vx-auto-suggest/VxAutoSuggest.vue';
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import draggable from 'vuedraggable'
@@ -209,6 +323,15 @@ export default {
             else if (this.sidebarWidth) return "navbar-full"
         },
 
+        // I18N
+        getCurrentLocaleData() {
+            const locale = this.$i18n.locale;
+            if (locale == "en") return { flag: "us", lang: 'English' }
+            else if (locale == "pt") return { flag: "br", lang: 'Portuguese' }
+            else if (locale == "fr") return { flag: "fr", lang: 'French' }
+            else if (locale == "de") return { flag: "de", lang: 'German' }
+        },
+
         // BOOKMARK & SEARCH
         data() {
             return this.$store.state.navbarSearchAndPinList;
@@ -233,16 +356,23 @@ export default {
             }
         },
 
+        // CART DROPDOWN
+        cartItems() {
+            return this.$store.state.eCommerce.cartItems.slice().reverse();
+        },
+
         // PROFILE
         user_displayName() {
-            return "john_doe"
-            // return JSON.parse(localStorage.getItem('userInfo')).displayName
+            return JSON.parse(localStorage.getItem('userInfo')).displayName
         },
         activeUserImg() {
             return JSON.parse(localStorage.getItem('userInfo')).photoURL || this.$store.state.AppActiveUser.img;
         }
     },
     methods: {
+        updateLocale(locale) {
+            this.$i18n.locale = locale;
+        },
         showSidebar() {
             this.$store.commit('TOGGLE_IS_SIDEBAR_ACTIVE', true);
         },
@@ -294,9 +424,31 @@ export default {
 
             return 'Just Now'
         },
+        logout() {
+            // if user is logged in via auth0
+            if (this.$auth.profile) this.$auth.logOut();
+
+            // if user is looged in via firebase
+            const firebaseCurrentUser = firebase.auth().currentUser
+
+            if (firebaseCurrentUser) {
+                firebase.auth().signOut().then(() => {
+                    this.$router.push('/pages/login')
+                    localStorage.removeItem('userInfo');
+                })
+            }
+            // Change role on logout. Same value as initialRole of acj.js
+            this.$acl.change('admin')
+            localStorage.removeItem('userRole');
+        },
         outside: function() {
             this.showBookmarkPagesDropdown = false
         },
+
+        // CART DROPDOWN
+        removeItemFromCart(item) {
+            this.$store.dispatch('eCommerce/toggleItemInCart', item)
+        }
     },
     directives: {
         'click-outside': {

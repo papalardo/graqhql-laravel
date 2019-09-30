@@ -9,7 +9,7 @@
 ========================================================================================== -->
 
 <template>
-    <div :class="[{'vs-sidebar-item-active':activeLink}, {'disabled-item pointer-events-none': isDisabled}]" class="vs-sidebar--item">
+    <div :class="[{'vs-sidebar-item-active':activeLink}, {'disabled-item pointer-events-none': isDisabled}]" class="vs-sidebar--item" v-if="canSee">
         <router-link v-if="to" :to="to" :class="[{'router-link-active': activeLink}]" :target="target" exact>
             <vs-icon v-if="!featherIcon" :icon-pack="iconPack" :icon="icon">
             </vs-icon>
@@ -84,6 +84,15 @@ export default {
                 // if (this.$route.path.slice(1).includes(this.to.slice(1)) && this.to.slice(1)) this.activeLink = true
                 // else this.activeLink = false
             }
+        }
+    },
+    computed: {
+        canSee() {
+            this.$acl.check(this.$store.state.userRole);
+            if(this.to) {
+                return this.$acl.check(this.$router.match(this.to).meta.rule)
+            }
+            return true
         }
     },
     updated() {
